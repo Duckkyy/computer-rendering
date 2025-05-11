@@ -1,0 +1,8 @@
+[project]
+name = "computer_rendering"
+version = "0.1"
+dependencies = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
