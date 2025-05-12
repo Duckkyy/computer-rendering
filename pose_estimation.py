@@ -9,8 +9,8 @@ from detect_human import HumanDetection
 
 # import matplotlib.pyplot as plt
 # sys.path.append('/home/dai/MCGaze/OpenPoseNet/')
-from suspicious_check import SuspiciousChecking
-sys.path.insert(0, '/home/dai/MCGaze/OpenPoseNet/')
+# from suspicious_check import SuspiciousChecking
+sys.path.insert(0, '/home/dh11255z/Documents/computer-rendering/OpenPoseNet/')
 
 from util.decode_pose import decode_pose
 from util.openpose_net import OpenPoseNet
@@ -21,7 +21,7 @@ class PoseEstimation:
     def __init__(self):
         self.net = OpenPoseNet()
         # self.orig_image = cv2.imread(image_path)
-        weight_file_path = '/home/dai/MCGaze/OpenPoseNet/weights/pose_model_scratch.pth'
+        weight_file_path = '/home/dh11255z/Documents/computer-rendering/OpenPoseNet/weights/pose_model_scratch.pth'
         self.net_weights = torch.load(weight_file_path, map_location={'cuda:0': 'cpu'})
         keys = list(self.net_weights.keys())
         # print(keys)
