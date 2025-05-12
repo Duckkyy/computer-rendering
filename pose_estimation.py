@@ -99,7 +99,7 @@ class PoseEstimation:
         return result_img, joint_list.tolist(), person_to_joint_assoc.tolist(), heatmaps, pafs
 
     def video_pose_estimation(self, video_path):  # NOT DONE YET
-        output_path = "/home/dai/MCGaze/res_all/pose/IMG_4721.mp4"
+        output_path = "/home/dh11255z/Documents/computer-rendering/result.mp4"
         cap = cv2.VideoCapture(video_path)
         # Get video properties for creating the output video
         frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -220,45 +220,47 @@ class PoseEstimation:
 pose_estimator = PoseEstimation()
 # res_frame = pose_estimator.estimate_pose_and_checking(cv2.imread('/home/dai/MCGaze/IMG_4721.jpg'))
 # cv2.imwrite('/home/dai/MCGaze/IMG_4721_res.jpg', res_frame)
-cap = cv2.VideoCapture('/home/dai/MCGaze/IMG_4724.mp4')
+# cap = cv2.VideoCapture('/home/dai/MCGaze/IMG_4724.mp4')
 # Get video properties for the output video
-fps = int(cap.get(cv2.CAP_PROP_FPS))
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-print(width, height, fps, frame_count)
+# fps = int(cap.get(cv2.CAP_PROP_FPS))
+# width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+# height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+# frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+# print(width, height, fps, frame_count)
 
 # Prepare the output video writer
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for the output video
-out = cv2.VideoWriter('/home/dai/MCGaze/IMG_4724_res2.mp4', fourcc, fps, (width, height))
-frame_cnt = 0
-while True:
+# fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for the output video
+# out = cv2.VideoWriter('/home/dai/MCGaze/IMG_4724_res2.mp4', fourcc, fps, (width, height))
+# frame_cnt = 0
+# while True:
     # Read frame by frame
-    ret, frame = cap.read()
+    # ret, frame = cap.read()
 
     # Check if frame is read correctly
-    if not ret:
-        break
+    # if not ret:
+    #     break
     
-    res_frame = pose_estimator.estimate_pose_and_checking(frame)
+    # res_frame = pose_estimator.estimate_pose_and_checking(frame)
 
     # Write the frame to the output video
-    out.write(res_frame)
-    if frame_cnt % 10 == 0:
-        print("END FRAME: ", frame_cnt)
-    frame_cnt += 1
+    # out.write(res_frame)
+    # if frame_cnt % 10 == 0:
+    #     print("END FRAME: ", frame_cnt)
+    # frame_cnt += 1
 
 # Release resources
-cap.release()
-out.release()
+# cap.release()
+# out.release()
 # _, _ = pose_estimator.video_pose_estimation('/home/dai/MCGaze/IMG_4724.mp4')
 
 
 
 
-# image_path = '/home/dai/MCGaze/test.jpg'
-# orig_image = cv2.imread(image_path)
+image_path = '/home/dh11255z/Documents/computer-rendering/test.png'
+orig_image = cv2.imread(image_path)
 # NG_boxes = pose_estimator.estimate_pose_and_checking(orig_image)
+res, _, _, _, _ = pose_estimator.estimate_pose(orig_image)
+cv2.imwrite('/home/dh11255z/Documents/computer-rendering/res.png', res)
 # print(NG_boxes)
 # joint_list, person_to_joint_assoc = pose_estimator.video_pose_estimation("/home/dai/MCGaze/IMG_4721.mp4")
 
