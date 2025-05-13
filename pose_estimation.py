@@ -111,6 +111,11 @@ class PoseEstimation:
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
 
+        all_coco17_keypoints = []
+
+        # BODY_25 to COCO_17 joint index mapping
+        body25_to_coco17 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
@@ -121,10 +126,28 @@ class PoseEstimation:
             # Write the frame into the output video
             out.write(result_frame)
 
+            if joint_list and len(joint_list) >= 17:
+                # Extract only (x, y) from joint_list
+                keypoints = np.array([[joint[0], joint[1]] for joint in joint_list])  # [25, 2]
+                keypoints_coco17 = keypoints[body25_to_coco17]  # [17, 2]
+            else:
+                keypoints_coco17 = np.zeros((17, 2))  # fallback for missing detection
+
+            all_coco17_keypoints.append(keypoints_coco17)
+
         # Release everything when job is finished
         cap.release()
         out.release()
         cv2.destroyAllWindows()
+
+        # Save as .npz
+        keypoints_array = np.stack(all_coco17_keypoints)  # [frames, 17, 2]
+        positions_2d = {
+            'S1': {
+                'custom': keypoints_array.astype(np.float32)
+            }
+        }
+        np.savez_compressed("/home/dh11255z/Documents/computer-rendering/result.npz", positions_2d=positions_2d)
 
         return joint_list, person_to_joint_assoc
 
@@ -172,6 +195,8 @@ class PoseEstimation:
                 
 
 pose_estimator = PoseEstimation()
+video_path = '/home/dh11255z/Documents/computer-rendering/test.mp4'
+_, _ = pose_estimator.video_pose_estimation(video_path)
 # res_frame = pose_estimator.estimate_pose_and_checking(cv2.imread('/home/dai/MCGaze/IMG_4721.jpg'))
 # cv2.imwrite('/home/dai/MCGaze/IMG_4721_res.jpg', res_frame)
 # cap = cv2.VideoCapture('/home/dai/MCGaze/IMG_4724.mp4')
@@ -210,16 +235,15 @@ pose_estimator = PoseEstimation()
 
 
 
-image_path = '/home/dh11255z/Documents/computer-rendering/test.png'
-orig_image = cv2.imread(image_path)
-# NG_boxes = pose_estimator.estimate_pose_and_checking(orig_image)
+# image_path = '/home/dh11255z/Documents/computer-rendering/test.png'
+# orig_image = cv2.imread(image_path)
 # res, _, _, _, _ = pose_estimator.estimate_pose(orig_image)
-res, joint_list, person_to_joint_assoc, heatmaps, pafs = pose_estimator.estimate_pose(orig_image)
-cv2.imwrite('/home/dh11255z/Documents/computer-rendering/res.png', res)
-print("JOINT LIST: ", joint_list)
-print("PERSON TO JOINT ASSOC: ", person_to_joint_assoc)
-print("HEATMAPS: ", heatmaps)
-print("PAFS: ", pafs)
+# res, joint_list, person_to_joint_assoc, heatmaps, pafs = pose_estimator.estimate_pose(orig_image)
+# cv2.imwrite('/home/dh11255z/Documents/computer-rendering/res.png', res)
+# print("JOINT LIST: ", joint_list)
+# print("PERSON TO JOINT ASSOC: ", person_to_joint_assoc)
+# print("HEATMAPS: ", heatmaps)
+# print("PAFS: ", pafs)
 # print(NG_boxes)
 # joint_list, person_to_joint_assoc = pose_estimator.video_pose_estimation("/home/dai/MCGaze/IMG_4721.mp4")
 
