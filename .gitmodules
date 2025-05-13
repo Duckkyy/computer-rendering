@@ -1,3 +1,0 @@
-[submodule "VideoPose3D"]
-	path = VideoPose3D
-	url = https://github.com/facebookresearch/VideoPose3D.git
