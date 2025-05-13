@@ -121,7 +121,7 @@ class PoseEstimation:
             if not ret:
                 break
 
-            result_frame, joint_list, person_to_joint_assoc = self.estimate_pose(frame)
+            result_frame, joint_list, person_to_joint_assoc, _, _ = self.estimate_pose(frame)
 
             # Write the frame into the output video
             out.write(result_frame)
