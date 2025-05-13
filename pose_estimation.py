@@ -37,7 +37,7 @@ class PoseEstimation:
 
         self.human_detector = HumanDetection()
 
-        print('ネットワーク設定完了：学習済みの重みをロードしました')
+        print('Pose Estimation Model Loaded')
 
     def estimate_pose(self, oriImg):
 
@@ -169,52 +169,6 @@ class PoseEstimation:
         cv2.destroyAllWindows()
 
         return angle_ls, time_render
-
-    def calculate_angle(self, kpt1, kpt2):
-        # Vector from point 1 (neck) to point 2 (nose)
-        vector = np.array([kpt1[0] - kpt2[0], kpt1[1] - kpt2[1]])
-        # Vertical up vector
-        up_vector = np.array([0, 1])
-        
-        # Calculate angle
-        dot_product = np.dot(vector, up_vector)
-        magnitude = np.linalg.norm(vector) * np.linalg.norm(up_vector)
-        angle = np.arccos(dot_product / magnitude)
-        return np.degrees(angle)
-
-    def estimate_pose_and_checking(self, orig_image):
-        bounding_boxes = self.human_detector.get_human_bbox(orig_image)
-        print(bounding_boxes)
-        NG_boxes = []
-        for i, boxes in enumerate(bounding_boxes):
-            person_image = orig_image[boxes[1]: boxes[3], boxes[0]: boxes[2]]  # (y1:y2, x1: x2)
-            resized_image = cv2.resize(person_image, None, fx=4, fy=4, interpolation=cv2.INTER_LINEAR)
-
-            # cv2.imwrite("person_{}.jpg".format(i), resized_image)
-            
-            _, joint_list, person_to_joint_assoc, _, _ = self.estimate_pose(resized_image)
-            # print(joint_list)
-            # print([person_to_joint_assoc[0][:-2]])
-            pose_info = {"kpts_info": joint_list, "people_kpts_info": [person_to_joint_assoc[0][:-2]]}
-
-            gaze_info = np.array([1,2,3])
-            checkor = SuspiciousChecking(pose_info, gaze_info, '/home/dai/MCGaze/dot.jpg')
-            if checkor.using_phone_1(orig_image, boxes):
-                if boxes[2] < 1400 :
-                    NG_boxes.append(boxes)
-            else:
-                if checkor.passing_material():
-                    NG_boxes.append(boxes)
-            # print(NG_boxes)
-            for bbox in NG_boxes:
-                top_left = (bbox[0], bbox[1])  # (x1, y1)
-                bottom_right = (bbox[2], bbox[3])  # (x2, y2)
-
-                color = (0, 255, 0)  # Green
-                thickness = 2  # Set to -1 for a filled rectangle
-                cv2.rectangle(orig_image, top_left, bottom_right, color, thickness)
-                
-        return orig_image
                 
 
 pose_estimator = PoseEstimation()
@@ -259,8 +213,13 @@ pose_estimator = PoseEstimation()
 image_path = '/home/dh11255z/Documents/computer-rendering/test.png'
 orig_image = cv2.imread(image_path)
 # NG_boxes = pose_estimator.estimate_pose_and_checking(orig_image)
-res, _, _, _, _ = pose_estimator.estimate_pose(orig_image)
+# res, _, _, _, _ = pose_estimator.estimate_pose(orig_image)
+res, joint_list, person_to_joint_assoc, heatmaps, pafs = pose_estimator.estimate_pose(orig_image)
 cv2.imwrite('/home/dh11255z/Documents/computer-rendering/res.png', res)
+print("JOINT LIST: ", joint_list)
+print("PERSON TO JOINT ASSOC: ", person_to_joint_assoc)
+print("HEATMAPS: ", heatmaps)
+print("PAFS: ", pafs)
 # print(NG_boxes)
 # joint_list, person_to_joint_assoc = pose_estimator.video_pose_estimation("/home/dai/MCGaze/IMG_4721.mp4")
 
