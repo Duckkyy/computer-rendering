@@ -99,7 +99,7 @@ class PoseEstimation:
         return result_img, joint_list.tolist(), person_to_joint_assoc.tolist(), heatmaps, pafs
 
     def video_pose_estimation(self, video_path):  # NOT DONE YET
-        output_path = "/home/dh11255z/Documents/computer-rendering/result.mp4"
+        output_path = "/home/dh11255z/Documents/computer-rendering/results/result.mp4"
         cap = cv2.VideoCapture(video_path)
         # Get video properties for creating the output video
         frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -147,7 +147,7 @@ class PoseEstimation:
                 'custom': keypoints_array.astype(np.float32)
             }
         }
-        np.savez_compressed("/home/dh11255z/Documents/computer-rendering/result.npz", positions_2d=positions_2d)
+        np.savez_compressed("/home/dh11255z/Documents/computer-rendering/results/result.npz", positions_2d=positions_2d)
 
         return joint_list, person_to_joint_assoc
 
