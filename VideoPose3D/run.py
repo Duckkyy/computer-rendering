@@ -39,7 +39,13 @@ dataset_path = 'data/data_3d_' + args.dataset + '.npz'
 if args.dataset == 'h36m':
     from common.h36m_dataset import Human36mDataset
     # dataset = Human36mDataset(dataset_path)
-    dataset = {'custom': None} 
+    class DummyDataset:
+        def subjects(self):
+            return ['S1']
+        def cameras(self):
+            return {'S1': {'custom_action': [0]}}  # dummy camera
+    dataset = DummyDataset()
+ 
 elif args.dataset.startswith('humaneva'):
     from common.humaneva_dataset import HumanEvaDataset
     dataset = HumanEvaDataset(dataset_path)
