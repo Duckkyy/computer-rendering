@@ -44,6 +44,10 @@ if args.dataset == 'h36m':
             return ['S1']
         def cameras(self):
             return {'S1': {'custom_action': [0]}}  # dummy camera
+        def __getitem__(self, subject):
+            return {
+                'custom_action': None  # dummy value; only the keys matter
+            }
     dataset = DummyDataset()
  
 elif args.dataset.startswith('humaneva'):
