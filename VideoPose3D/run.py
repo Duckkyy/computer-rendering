@@ -73,6 +73,7 @@ for subject in dataset.subjects():
             anim['positions_3d'] = positions_3d
 
 print('Loading 2D detections...')
+print("KAKAKAKAKAKA: ", 'data/data_2d_' + args.dataset + '_' + args.keypoints + '.npz')
 keypoints = np.load('data/data_2d_' + args.dataset + '_' + args.keypoints + '.npz', allow_pickle=True)
 keypoints_metadata = keypoints['metadata'].item()
 keypoints_symmetry = keypoints_metadata['keypoints_symmetry']
