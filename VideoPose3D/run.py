@@ -39,17 +39,6 @@ dataset_path = 'data/data_3d_' + args.dataset + '.npz'
 if args.dataset == 'h36m':
     from common.h36m_dataset import Human36mDataset
     dataset = Human36mDataset(dataset_path)
-    # class DummyDataset:
-    #     def subjects(self):
-    #         return ['S1']
-    #     def cameras(self):
-    #         return {'S1': {'custom_action': [0]}}  # dummy camera
-    #     def __getitem__(self, subject):
-    #         return {
-    #             'custom_action': {}  # dummy value; only the keys matter
-    #         }
-    # dataset = DummyDataset()
- 
 elif args.dataset.startswith('humaneva'):
     from common.humaneva_dataset import HumanEvaDataset
     dataset = HumanEvaDataset(dataset_path)
@@ -73,7 +62,6 @@ for subject in dataset.subjects():
             anim['positions_3d'] = positions_3d
 
 print('Loading 2D detections...')
-print("KAKAKAKAKAKA: ", 'data/data_2d_' + args.dataset + '_' + args.keypoints + '.npz')
 keypoints = np.load('data/data_2d_' + args.dataset + '_' + args.keypoints + '.npz', allow_pickle=True)
 keypoints_metadata = keypoints['metadata'].item()
 keypoints_symmetry = keypoints_metadata['keypoints_symmetry']
