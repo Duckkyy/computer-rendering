@@ -62,12 +62,17 @@ for subject in dataset.subjects():
             anim['positions_3d'] = positions_3d
 
 print('Loading 2D detections...')
+print('data/data_2d_' + args.dataset + '_' + args.keypoints + '.npz')
 keypoints = np.load('data/data_2d_' + args.dataset + '_' + args.keypoints + '.npz', allow_pickle=True)
+print("AFTER LOADING DATA: ", keypoints)
 keypoints_metadata = keypoints['metadata'].item()
+print("Keypoints metadata:", keypoints_metadata)
 keypoints_symmetry = keypoints_metadata['keypoints_symmetry']
+print("Keypoints symmetry:", keypoints_symmetry)
 kps_left, kps_right = list(keypoints_symmetry[0]), list(keypoints_symmetry[1])
 joints_left, joints_right = list(dataset.skeleton().joints_left()), list(dataset.skeleton().joints_right())
 keypoints = keypoints['positions_2d'].item()
+print("Loaded 2D detections for {} subjects".format(keypoints))
 
 for subject in dataset.subjects():
     assert subject in keypoints, 'Subject {} is missing from the 2D detections dataset'.format(subject)
@@ -111,6 +116,8 @@ def fetch(subjects, action_filter=None, subset=1, parse_3d_poses=True):
     out_poses_3d = []
     out_poses_2d = []
     out_camera_params = []
+    print('INFO: Fetching data for subjects:', subjects, keypoints)
+    print('INFO: Action filter:', keypoints.keys())
     for subject in subjects:
         for action in keypoints[subject].keys():
             if action_filter is not None:
