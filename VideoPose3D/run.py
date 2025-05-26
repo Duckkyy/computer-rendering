@@ -38,17 +38,17 @@ print('Loading dataset...')
 dataset_path = 'data/data_3d_' + args.dataset + '.npz'
 if args.dataset == 'h36m':
     from common.h36m_dataset import Human36mDataset
-    # dataset = Human36mDataset(dataset_path)
-    class DummyDataset:
-        def subjects(self):
-            return ['S1']
-        def cameras(self):
-            return {'S1': {'custom_action': [0]}}  # dummy camera
-        def __getitem__(self, subject):
-            return {
-                'custom_action': {}  # dummy value; only the keys matter
-            }
-    dataset = DummyDataset()
+    dataset = Human36mDataset(dataset_path)
+    # class DummyDataset:
+    #     def subjects(self):
+    #         return ['S1']
+    #     def cameras(self):
+    #         return {'S1': {'custom_action': [0]}}  # dummy camera
+    #     def __getitem__(self, subject):
+    #         return {
+    #             'custom_action': {}  # dummy value; only the keys matter
+    #         }
+    # dataset = DummyDataset()
  
 elif args.dataset.startswith('humaneva'):
     from common.humaneva_dataset import HumanEvaDataset
