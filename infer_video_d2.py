@@ -150,7 +150,7 @@ def main(config_file, input_dir, output_dir, image_ext='mp4'):
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file(config_file))
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7
-    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(args.cfg)
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(config_file)
     predictor = DefaultPredictor(cfg)
     
 
