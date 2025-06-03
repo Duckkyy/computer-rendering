@@ -15,7 +15,7 @@
   ```
 
 3. Run 3D pose estimation (export .npy)
-   ```
-   cd ../
-   python run.py -d custom -k myvideo -arc 3,3,3,3,3 -c checkpoint --evaluate pretrained_h36m_detectron_coco.bin --render --viz-subject test.mp4 --viz-action custom --viz-camera 0 --viz-video input_video/test.mp4 --viz-output output.mp4 --viz-export test --viz-size 6
-   ```
+ ```
+ cd ../
+ python run.py -d custom -k myvideo -arc 3,3,3,3,3 -c checkpoint --evaluate pretrained_h36m_detectron_coco.bin --render --viz-subject test.mp4 --viz-action custom --viz-camera 0 --viz-video input_video/test.mp4 --viz-output output.mp4 --viz-export test --viz-size 6
+ ```
